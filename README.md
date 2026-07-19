@@ -6,8 +6,8 @@
 ## How to Use
 
 1. Copy the loader below.
-2. Paste it into your executor.
-3. Execute.
+2. Paste it into ur executor.
+3. Then Execute.
 
 ## Loader
 

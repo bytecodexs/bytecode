@@ -40,12 +40,18 @@ local R = {
     StopFishing     = FR and FR:WaitForChild("StopFishing", 5),
     RequestFishBite = reward and reward.RF:FindFirstChild("RequestFishBite"),
     PullInput       = (reward and reward.RF and reward.RF:FindFirstChild("FishingPullInput")) or W:FindFirstChild("FishingPullInput"),
-    PullState       = W:FindFirstChild("FishingPullState") or (reward and reward.RE:FindFirstChild("FishingPullState")),
-    FishCaught      = W:FindFirstChild("FishCaughtEvent") or (reward and reward.RE:FindFirstChild("FishCaught")),
+    PullState       = (reward and reward.RE and reward.RE:FindFirstChild("FishingPullState")) or W:FindFirstChild("FishingPullState"),
+    FishCaught      = (reward and reward.RE and reward.RE:FindFirstChild("FishCaught")) or W:FindFirstChild("FishCaughtEvent"),
     SetAfkMode      = W:FindFirstChild("SetAfkMode"),
     RodShop         = W:FindFirstChild("RodShopRemotes"),
     Shop            = W:FindFirstChild("FishermanShopRemotes"),
 }
+
+print("[FAM DEBUG] R.PullInput path:", R.PullInput and R.PullInput:GetFullName())
+print("[FAM DEBUG] R.PullState path:", R.PullState and R.PullState:GetFullName())
+print("[FAM DEBUG] R.FishCaught path:", R.FishCaught and R.FishCaught:GetFullName())
+print("[FAM DEBUG] reward.RE FishingPullState exists:", reward and reward.RE and reward.RE:FindFirstChild("FishingPullState") ~= nil)
+print("[FAM DEBUG] W FishingPullState exists:", W:FindFirstChild("FishingPullState") ~= nil)
 
 local BossComm = W:FindFirstChild("BossEventComm") or W:WaitForChild("BossEventComm", 5)
 local Boss = {
@@ -2482,7 +2488,7 @@ do
     _loadCfg()
 
     Window:Tag({
-        Title = "FAM v1.1.00",
+        Title = "FAM v1.1.5",
         Icon = "solar:crown-line-bold",
         Color = Color3.fromRGB(0, 0, 0),
         Border = true,

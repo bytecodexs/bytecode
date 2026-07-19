@@ -36,7 +36,7 @@ end
 RegisterGame(
 	{111385005478215, 90457367396205},
 	"Fish and Monsters!",
-	"https://raw.githubusercontent.com/bytecodexs/bytecode/main/byteloader.luau"
+	"https://raw.githubusercontent.com/bytecodexs/bytecode/main/src/bytecode.lua"
 )
 
 function ByteCode.Notify(title, text, duration)

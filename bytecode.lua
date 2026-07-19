@@ -637,6 +637,7 @@ local function runCycle(myGen)
     local resolved, success, catchPayload = false, false, nil
     local sid = bite.SessionId
     local connPull, connCatch
+    local tooEarly = false
     if R.PullState then
         connPull = R.PullState.OnClientEvent:Connect(function(payload)
             print("[FAM DEBUG] PullState payload:", payload)
@@ -650,6 +651,11 @@ local function runCycle(myGen)
             if payload.type == "progress" then
                 state.progress = tonumber(payload.progress) or state.progress
             elseif payload.type == "resolved" then
+                if payload.reason == "too_early" then
+                    -- Sesi belum siap menerima tap; jangan anggap gagal, retry begin.
+                    tooEarly = true
+                    return
+                end
                 resolved = true
                 success = payload.success == true or payload.reason == "caught"
                 state.progress = tonumber(payload.progress) or state.progress
@@ -671,15 +677,28 @@ local function runCycle(myGen)
         return R.PullInput:InvokeServer(sid, "begin")
     end)
     print("[FAM DEBUG] begin ok=", okBegin, "result=", resBegin)
+    task.wait(0.5) -- beri waktu server menginisialisasi sesi sebelum tap pertama (hindari reason=too_early)
     local ppt = tonumber(bite.progressPerTap) or 0.06
     local delay = state.speedFishingDelay or math.clamp(0.055 + (ppt < 0.05 and 0.02 or 0), 0.05, 0.12)
     local deadline = os.clock() + (tonumber(bite.timeLimit) or 15) + 2
     local tapCount = 0
+    local beginRetries = 0
     while os.clock() < deadline and not resolved and state.v2 and not state.stop and not orphaned() do
+        if tooEarly then
+            tooEarly = false
+            beginRetries += 1
+            local waitFor = 0.5 + (beginRetries * 0.3)
+            print("[FAM DEBUG] too_early detected, retry begin #" .. beginRetries .. " after " .. waitFor .. "s")
+            task.wait(waitFor)
+            pcall(function()
+                R.PullInput:InvokeServer(sid, "begin")
+            end)
+            task.wait(waitFor)
+        end
         pcall(function()
             local mult = state.tapMultiplier or 1
             for i = 1, mult do
-                if resolved or state.stop or not state.v2 or orphaned() then break end
+                if resolved or state.stop or not state.v2 or orphaned() or tooEarly then break end
                 local okTap, resTap = pcall(function()
                     return R.PullInput:InvokeServer(sid, "tap")
                 end)
@@ -2463,7 +2482,7 @@ do
     _loadCfg()
 
     Window:Tag({
-        Title = "FAM v1.1.5",
+        Title = "FAM v1.1.00",
         Icon = "solar:crown-line-bold",
         Color = Color3.fromRGB(0, 0, 0),
         Border = true,

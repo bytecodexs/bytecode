@@ -12,7 +12,7 @@
 ## Loader
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/bytecode00010/roblox-scripts/main/byteloader.luau"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bytecodexs/bytecode/main/byteloader.luau"))()
 ```
 
 ## Why ByteCode?

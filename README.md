@@ -1,7 +1,7 @@
 <h1 align="center">ByteCode</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&size=24&pause=1000&center=true&vCenter=true&width=500&lines=Roblox+Script+Collection;Fast+%7C+Simple+%7C+Updated" />
+  <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&size=24&pause=1000&center=true&vCenter=true&width=500&lines=Byte+Code+Studios;Fast+%7C+Simple+%7C+Updated" />
 </p>
 
 <p align="center">

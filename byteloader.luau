@@ -33,11 +33,12 @@ RegisterGame(
 	111385005478215,
 	90457367396205
 }, "Fish and Monsters!", "https://raw.githubusercontent.com/bytecodexs/bytecodexs/main/src/bytecode.lua")
-function ByteCode.Notify(title, text, duration)
+function ByteCode.Notify(title, text, duration, icon)
 	pcall(function()
 		game:GetService("StarterGui"):SetCore("SendNotification", {
 			Title = title,
 			Text = text,
+			Icon = icon or "rbxassetid://97024333573219",
 			Duration = duration or 5
 		})
 	end)
